@@ -2,20 +2,23 @@ import math as m
 GRAVITY = 9.81
 
 def calcFluidSpeed(flowRate, radius):
-    return pow(flowRate / (m.pi * pow(radius, 2)), 2)
+    return flowRate / (m.pi * pow(radius, 2))
 
-def pipeFriction(density, time, frictionFactor, flowRate, velocity, length, diameter):
-    mass = density * flowRate * time
+def pipeFriction(density, frictionFactor, flowRate, length, diameter):
+    mDot = density * flowRate
     headLoss = frictionFactor * 8 * (flowRate ** 2) * length / ((m.pi ** 2) * GRAVITY * pow(diameter, 5))
-    energyLoss = mass * headLoss * GRAVITY
-    return energyLoss
+    energyLoss = mDot * headLoss * GRAVITY
+    return headLoss
 
 def bendLoss(bendFactor, fluidSpeed):
-    energyLoss = bendFactor * (fluidSpeed ** 2) / (2 * GRAVITY)
-    return energyLoss
+    headLoss = bendFactor * (fluidSpeed ** 2) / (2 * GRAVITY)
+    return headLoss
 
-def valveLoss(resistanceCoefficent, fluidSpeed):
-    return (pow(fluidSpeed, 2) * resistanceCoefficent / (2 * GRAVITY))
+def valveLoss(density, flowRate, resistanceCoefficent, radius):
+    headLoss = pow(calcFluidSpeed(flowRate, radius), 2) * resistanceCoefficent / (2 * GRAVITY)
+    mDot = density * flowRate
+    energyLoss = mDot * headLoss * GRAVITY
+    return energyLoss
 
 def leakLoss(density , flowRate, time, specHeatCapacity, tempChange, pressure, velocity):
     mass = density * flowRate * time

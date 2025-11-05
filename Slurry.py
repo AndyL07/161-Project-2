@@ -5,6 +5,11 @@
 # Section: <4>
 # Team: <59>
 
+ethDen = 789.4              # kg/m3
+sugWatPercDen = 4.93596437  # kg/m3/w%
+watDen = 998.19             # kg/m3
+fibDen = 1500                # kg/m3
+
 class Slurry():
     def __init__(self, eth, sug, wat, fib):
         self.ethanol = eth
@@ -49,11 +54,26 @@ class Slurry():
     def getPurity(self):
         return self.ethanol / self.sumWeights()
     
+    def getDensity(self):
+        solMass = self.sugar + self.water
+        solDen = (self.sugar / solMass) * sugWatPercDen + watDen
+        
+        solVol = solMass / solDen
+        ethVol = self.ethanol / ethDen
+        fibVol = self.fiber / fibDen
+        
+        totVol = solVol + ethVol + fibVol
+        totMass = solMass + self.ethanol + self.fiber
+        
+        totDen = totMass / totVol
+        return totDen
+        
+    
     def __str__(self):
         str = "---------------------------------------------\n"
         str += f"Ethanol: {self.ethanol:2.5}\n"
         str += f"Sugar: {self.sugar:2.5}\n"
         str += f"Water: {self.water:2.5}\n"
         str += f"Fiber: {self.fiber:2.5}\n"
-        str += f"Purity: {self.getPurity():2.5}\n"
+        str += f"Purity: {self.getPurity() * 100:2.5}%\n"
         return str
