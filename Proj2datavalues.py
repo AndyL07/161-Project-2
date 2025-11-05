@@ -142,34 +142,34 @@ bends = [
     {"angle": 20, "options": [
         {"diameter": 0.10, "cost": 100, "pipeLossCoeff": 0.1},
         {"diameter": 0.11, "cost": 149, "pipeLossCoeff": 0.1},
-        {"diameter": 0.12, "cost": 493, "pipeLossCoeff": 0.2},
-        {"diameter": 0.13, "cost": 1400, "pipeLossCoeff": 0.22},
-        {"diameter": 0.14, "cost": 3200, "pipeLossCoeff": 0.27},
-        {"diameter": 0.15, "cost": 6200, "pipeLossCoeff": 0.3},
+        {"diameter": 0.12, "cost": 493, "pipeLossCoeff": 0.1},
+        {"diameter": 0.13, "cost": 1400, "pipeLossCoeff": 0.1},
+        {"diameter": 0.14, "cost": 3200, "pipeLossCoeff": 0.1},
+        {"diameter": 0.15, "cost": 6200, "pipeLossCoeff": 0.1},
     ]},
     {"angle": 30, "options": [
         {"diameter": 0.10, "cost": 105, "pipeLossCoeff": 0.15},
         {"diameter": 0.11, "cost": 157, "pipeLossCoeff": 0.15},
-        {"diameter": 0.12, "cost": 517, "pipeLossCoeff": 0.2},
-        {"diameter": 0.13, "cost": 1500, "pipeLossCoeff": 0.22},
-        {"diameter": 0.14, "cost": 3400, "pipeLossCoeff": 0.27},
-        {"diameter": 0.15, "cost": 6500, "pipeLossCoeff": 0.3},
+        {"diameter": 0.12, "cost": 517, "pipeLossCoeff": 0.15},
+        {"diameter": 0.13, "cost": 1500, "pipeLossCoeff": 0.15},
+        {"diameter": 0.14, "cost": 3400, "pipeLossCoeff": 0.15},
+        {"diameter": 0.15, "cost": 6500, "pipeLossCoeff": 0.15},
     ]},
     {"angle": 45, "options": [
         {"diameter": 0.10, "cost": 110, "pipeLossCoeff": 0.2},
         {"diameter": 0.11, "cost": 164, "pipeLossCoeff": 0.2},
         {"diameter": 0.12, "cost": 543, "pipeLossCoeff": 0.2},
-        {"diameter": 0.13, "cost": 1600, "pipeLossCoeff": 0.22},
-        {"diameter": 0.14, "cost": 3600, "pipeLossCoeff": 0.27},
-        {"diameter": 0.15, "cost": 6900, "pipeLossCoeff": 0.3},
+        {"diameter": 0.13, "cost": 1600, "pipeLossCoeff": 0.2},
+        {"diameter": 0.14, "cost": 3600, "pipeLossCoeff": 0.2},
+        {"diameter": 0.15, "cost": 6900, "pipeLossCoeff": 0.2},
     ]},
     {"angle": 60, "options": [
         {"diameter": 0.10, "cost": 116, "pipeLossCoeff": 0.22},
         {"diameter": 0.11, "cost": 173, "pipeLossCoeff": 0.22},
         {"diameter": 0.12, "cost": 570, "pipeLossCoeff": 0.22},
         {"diameter": 0.13, "cost": 1600, "pipeLossCoeff": 0.22},
-        {"diameter": 0.14, "cost": 3800, "pipeLossCoeff": 0.27},
-        {"diameter": 0.15, "cost": 7200, "pipeLossCoeff": 0.3},
+        {"diameter": 0.14, "cost": 3800, "pipeLossCoeff": 0.22},
+        {"diameter": 0.15, "cost": 7200, "pipeLossCoeff": 0.22},
     ]},
     {"angle": 75, "options": [
         {"diameter": 0.10, "cost": 122, "pipeLossCoeff": 0.27},
@@ -177,7 +177,7 @@ bends = [
         {"diameter": 0.12, "cost": 599, "pipeLossCoeff": 0.27},
         {"diameter": 0.13, "cost": 1700, "pipeLossCoeff": 0.27},
         {"diameter": 0.14, "cost": 3900, "pipeLossCoeff": 0.27},
-        {"diameter": 0.15, "cost": 7600, "pipeLossCoeff": 0.3},
+        {"diameter": 0.15, "cost": 7600, "pipeLossCoeff": 0.27},
     ]},
     {"angle": 90, "options": [
         {"diameter": 0.10, "cost": 128, "pipeLossCoeff": 0.3},
@@ -192,27 +192,27 @@ bends = [
 valves = [
     {"name": "Salvage", "options": [
         {"diameter": 0.10, "cost": 100, "flowCoeff": 800},
-        {"diameter": 0.11, "cost": 120, "flowCoeff": 700},
-        {"diameter": 0.12, "cost": 257, "flowCoeff": 600},
-        {"diameter": 0.13, "cost": 630, "flowCoeff": 500},
-        {"diameter": 0.14, "cost": 1400, "flowCoeff": 500},
-        {"diameter": 0.15, "cost": 2600, "flowCoeff": 500},
+        {"diameter": 0.11, "cost": 120, "flowCoeff": 800},
+        {"diameter": 0.12, "cost": 257, "flowCoeff": 800},
+        {"diameter": 0.13, "cost": 630, "flowCoeff": 800},
+        {"diameter": 0.14, "cost": 1400, "flowCoeff": 800},
+        {"diameter": 0.15, "cost": 2600, "flowCoeff": 800},
     ]},
     {"name": "Questionable", "options": [
         {"diameter": 0.10, "cost": 120, "flowCoeff": 700},
         {"diameter": 0.11, "cost": 144, "flowCoeff": 700},
-        {"diameter": 0.12, "cost": 308, "flowCoeff": 600},
-        {"diameter": 0.13, "cost": 756, "flowCoeff": 500},
-        {"diameter": 0.14, "cost": 1600, "flowCoeff": 500},
-        {"diameter": 0.15, "cost": 3100, "flowCoeff": 500},
+        {"diameter": 0.12, "cost": 308, "flowCoeff": 700},
+        {"diameter": 0.13, "cost": 756, "flowCoeff": 700},
+        {"diameter": 0.14, "cost": 1600, "flowCoeff": 700},
+        {"diameter": 0.15, "cost": 3100, "flowCoeff": 700},
     ]},
     {"name": "Outstanding", "options": [
         {"diameter": 0.10, "cost": 270, "flowCoeff": 600},
         {"diameter": 0.11, "cost": 323, "flowCoeff": 600},
         {"diameter": 0.12, "cost": 694, "flowCoeff": 600},
-        {"diameter": 0.13, "cost": 1700, "flowCoeff": 500},
-        {"diameter": 0.14, "cost": 3700, "flowCoeff": 500},
-        {"diameter": 0.15, "cost": 6900, "flowCoeff": 500},
+        {"diameter": 0.13, "cost": 1700, "flowCoeff": 600},
+        {"diameter": 0.14, "cost": 3700, "flowCoeff": 600},
+        {"diameter": 0.15, "cost": 6900, "flowCoeff": 600},
     ]},
     {"name": "Glorious", "options": [
         {"diameter": 0.10, "cost": 297, "flowCoeff": 500},
@@ -273,4 +273,67 @@ def getValveValue(name, diameter, key):
                 if option["diameter"] == diameter:
                     return option.get(key)
     return None
+
+max = 0
+
+for f in fermenters:
+    
+    efficiency = 0
+    cost = 0
+    
+    fname = f["name"]
+    efficiency += getFermenterValue(fname, "efficiency")
+    cost += getFermenterValue(fname, "cost")
+    
+    for d in distillers:
+        dname = d["name"]
+        efficiency += getDistillerValue(dname, "efficiency")
+        cost += getDistillerValue(dname, "cost")
+        
+        for m in materialRemoval:
+            mname = m["name"]
+            efficiency += getMaterialRemovalValue(mname, "efficiency")
+            cost += getMaterialRemovalValue(mname, "cost")
+            
+            for p in pumps:
+                pname = p["name"]
+                length = 6
+                for i in range(11):
+                    cost += getPumpValue(pname, length, "cost")
+                    efficiency += getPumpValue(pname, length, "efficiency")
+                    length += 3
+                    
+                    for pi in pipes:
+                        piname = pi["name"]
+                        diameter = 0.1
+                        for i in range(6):
+                            diameter = round(diameter, 2)
+                            cost += getPipeValue(piname, diameter, "cost")
+                            #efficiency += getPipeValue(piname, diameter, "efficiency")
+                            diameter += 0.01
+                            
+                            for b in bends:
+                                angle = b["angle"]
+                                diam = 0.1
+                                for i in range(6):
+                                    diam = round(diam, 2)
+                                    cost += getBendValue(angle, diam, "cost")
+                                    #efficiency += getBendValue(angle, diam, "efficiency")
+                                    diam += 0.01
+                                    
+                                    for v in valves:
+                                        vname = v["name"]
+                                        dia = 0.1
+                                        for i in range(6):
+                                            dia = round(dia, 2)
+                                            cost += getValveValue(vname, dia, "cost")
+                                            #efficiency += getValveValue(vname, dia, "efficiency")
+                                            dia += 0.01
+                                            
+                                            if(efficiency / cost > max):
+                                                max = efficiency / cost
+print(max)
+
+
+
 
