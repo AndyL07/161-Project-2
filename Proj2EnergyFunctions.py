@@ -17,9 +17,9 @@ def bendLoss(bendFactor, fluidSpeed):
 def valveLoss(resistanceCoefficent, fluidSpeed):
     return (pow(fluidSpeed, 2) * resistanceCoefficent / (2 * GRAVITY))
 
-def leakLoss(density , flowRate, time, specHeatCapacity, tempChange, pressure, fluidDensity, velocity):
+def leakLoss(density , flowRate, time, specHeatCapacity, tempChange, pressure, velocity):
     mass = density * flowRate * time
     thermalLoss = mass * specHeatCapacity * tempChange
-    pressureLoss = mass * (pressure / fluidDensity)
+    pressureLoss = mass * (pressure / density)
     kineticLoss = (1/2) * mass * velocity
     return (thermalLoss + pressureLoss + kineticLoss)
