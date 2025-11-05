@@ -276,6 +276,8 @@ def getValveValue(name, diameter, key):
 
 max = 0
 
+step = 0
+
 for f in fermenters:
     
     efficiency = 0
@@ -290,48 +292,54 @@ for f in fermenters:
         efficiency += getDistillerValue(dname, "efficiency")
         cost += getDistillerValue(dname, "cost")
         
-        for m in materialRemoval:
-            mname = m["name"]
-            efficiency += getMaterialRemovalValue(mname, "efficiency")
-            cost += getMaterialRemovalValue(mname, "cost")
+        for dehyd in distillers:
+            dehydname = dehyd["name"]
+            efficiency += getDistillerValue(dehydname, "efficiency")
+            cost += getDistillerValue(dehydname, "cost")
             
-            for p in pumps:
-                pname = p["name"]
-                length = 6
-                for i in range(11):
-                    cost += getPumpValue(pname, length, "cost")
-                    efficiency += getPumpValue(pname, length, "efficiency")
-                    length += 3
-                    
-                    for pi in pipes:
-                        piname = pi["name"]
-                        diameter = 0.1
-                        for i in range(6):
-                            diameter = round(diameter, 2)
-                            cost += getPipeValue(piname, diameter, "cost")
-                            #efficiency += getPipeValue(piname, diameter, "efficiency")
-                            diameter += 0.01
-                            
-                            for b in bends:
-                                angle = b["angle"]
-                                diam = 0.1
-                                for i in range(6):
-                                    diam = round(diam, 2)
-                                    cost += getBendValue(angle, diam, "cost")
-                                    #efficiency += getBendValue(angle, diam, "efficiency")
-                                    diam += 0.01
-                                    
-                                    for v in valves:
-                                        vname = v["name"]
-                                        dia = 0.1
-                                        for i in range(6):
-                                            dia = round(dia, 2)
-                                            cost += getValveValue(vname, dia, "cost")
-                                            #efficiency += getValveValue(vname, dia, "efficiency")
-                                            dia += 0.01
-                                            
-                                            if(efficiency / cost > max):
-                                                max = efficiency / cost
+            for m in materialRemoval:
+                mname = m["name"]
+                efficiency += getMaterialRemovalValue(mname, "efficiency")
+                cost += getMaterialRemovalValue(mname, "cost")
+                
+                for p in pumps:
+                    pname = p["name"]
+                    length = 6
+                    for i in range(11):
+                        cost += getPumpValue(pname, length, "cost")
+                        efficiency += getPumpValue(pname, length, "efficiency")
+                        length += 3
+                        
+                        for pi in pipes:
+                            piname = pi["name"]
+                            diameter = 0.1
+                            for i in range(6):
+                                diameter = round(diameter, 2)
+                                cost += getPipeValue(piname, diameter, "cost")
+                                #efficiency += getPipeValue(piname, diameter, "efficiency")
+                                diameter += 0.01
+                                
+                                for b in bends:
+                                    angle = b["angle"]
+                                    diam = 0.1
+                                    for i in range(6):
+                                        diam = round(diam, 2)
+                                        cost += getBendValue(angle, diam, "cost")
+                                        #efficiency += getBendValue(angle, diam, "efficiency")
+                                        diam += 0.01
+                                        
+                                        for v in valves:
+                                            vname = v["name"]
+                                            dia = 0.1
+                                            for i in range(6):
+                                                dia = round(dia, 2)
+                                                cost += getValveValue(vname, dia, "cost")
+                                                #efficiency += getValveValue(vname, dia, "efficiency")
+                                                dia += 0.01
+                                                step += 1
+                                                print(step)
+                                                if(efficiency / cost > max):
+                                                    max = efficiency / cost
 print(max)
 
 
