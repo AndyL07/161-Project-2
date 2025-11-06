@@ -272,6 +272,7 @@ def getValveValue(name, diameter, key):
             for option in valve["options"]:
                 if option["diameter"] == diameter:
                     return option.get(key)
+<<<<<<< Updated upstream
     return None
 
 max = 0
@@ -337,3 +338,6 @@ print(max)
 
 
 
+=======
+    return None
+>>>>>>> Stashed changes

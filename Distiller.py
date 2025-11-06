@@ -6,22 +6,27 @@
 # Team: <59>
 
 class Distiller():
-    def __init__(self, etaDist):
+    def __init__(self, etaDist, wattageDist, printData):
         self.eta = etaDist
+        self.wattage = wattageDist
+        self.print = printData
         
     def distill(self, slurryIn):
         multFactor = (slurryIn.getEth() * ((1 / self.eta) - 1) /
                         (slurryIn.getSug() + slurryIn.getWat() + slurryIn.getFib()))
         
         slurryIn.setWat(slurryIn.getWat() * multFactor)
-        
         slurryIn.setSug(slurryIn.getSug() * multFactor)
-        
         slurryIn.setFib(slurryIn.getFib() * multFactor)
         
-        print("Distilling")
-        print(slurryIn)
+        energyUse = self.wattage * (3.6 * (10 ** 6))
+                
+        if self.print:
+            print("Distilling")
+            print(slurryIn)
         
+        return energyUse
+
         # slurryIn.normalize()
         # print("Normalizing")
         # print(slurryIn)

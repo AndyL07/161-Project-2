@@ -6,14 +6,20 @@
 # Team: <59>
 
 class Filtration():
-    def __init__(self, etaFilt):
+    def __init__(self, etaFilt, wattageFilt, printData):
         self.eta = etaFilt
+        self. wattage = wattageFilt
+        self.print = printData
         
     def filt(self, slurryIn):
         slurryIn.setFib(slurryIn.getFib() * (1 - self.eta))
+        energyUse = self.wattage * (3.6 * (10 ** 6))
         
-        print("Filtering")
-        print(slurryIn)
+        if self.print:
+            print("Filtering")
+            print(slurryIn)
+        
+        return energyUse
         
         # slurryIn.normalize()
         # print("Normalizing")

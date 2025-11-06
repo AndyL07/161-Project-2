@@ -6,15 +6,21 @@
 # Team: <59>
 
 class Fermenter():
-    def __init__(self, etaFerm):
+    def __init__(self, etaFerm, wattageFerm, printData):
         self.eta = etaFerm
+        self.wattage = wattageFerm
+        self.print = printData
         
     def ferment(self, slurryIn):
         slurryIn.setEth(0.51 * slurryIn.getSug() * self.eta)
         slurryIn.setSug(slurryIn.getSug() * (1 - self.eta))
+        energyUse = self.wattage * (3.6 * (10 ** 6))
         
-        print("Fermenting")  
-        print(slurryIn)
+        if self.print:
+            print("Fermenting")  
+            print(slurryIn)
+        
+        return energyUse
         
         # slurryIn.normalize()
         # print("Normalizing")

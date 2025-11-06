@@ -8,14 +8,17 @@
 ethDen = 789.4              # kg/m3
 sugWatPercDen = 4.93596437  # kg/m3/w%
 watDen = 998.19             # kg/m3
-fibDen = 1500                # kg/m3
+fibDen = 1500               # kg/m3
 
 class Slurry():
-    def __init__(self, eth, sug, wat, fib):
+    def __init__(self, eth, sug, wat, fib, volFlowRate):
         self.ethanol = eth
         self.sugar = sug
         self.water = wat
         self.fiber = fib
+        self.initVolFlow = volFlowRate
+        self.initVol = 1.0
+        self.initVol = self.getVolumePerc()
         
     def setEth(self, eth):
         self.ethanol = eth
@@ -66,14 +69,23 @@ class Slurry():
         totMass = solMass + self.ethanol + self.fiber
         
         totDen = totMass / totVol
-        return totDen
-        
+        return totDen        
+    
+    def getTotMassPerc(self):
+        return self.ethanol + self.sugar + self.water + self.fiber
+    
+    def getVolumePerc(self):
+        return self.getTotMassPerc() / self.getDensity() / self.initVol
+    
+    def getVolFlowRate(self):
+        return self.initVolFlow * self.getVolumePerc()
     
     def __str__(self):
         str = "---------------------------------------------\n"
-        str += f"Ethanol: {self.ethanol:2.5}\n"
-        str += f"Sugar: {self.sugar:2.5}\n"
-        str += f"Water: {self.water:2.5}\n"
-        str += f"Fiber: {self.fiber:2.5}\n"
+        str += f"Ethanol: {self.ethanol:2.5}% wt\n"
+        str += f"Sugar: {self.sugar:2.5}% wt\n"
+        str += f"Water: {self.water:2.5}% wt\n"
+        str += f"Fiber: {self.fiber:2.5}% wt\n"
         str += f"Purity: {self.getPurity() * 100:2.5}%\n"
+        str += f"Volumetric Flow Rate: {self.getVolFlowRate():2.5} m3/s\n"
         return str
