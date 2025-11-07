@@ -5,8 +5,10 @@
 # Section: <4>
 # Team: <59>
 
+# Imports
 from Part_Runner import runParts
 
+# Pump data
 pumps = [
     {"name": "Cheap", "options": [
         {"length": 6, "cost": 200000, "efficiency": 0.80},

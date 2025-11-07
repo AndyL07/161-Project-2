@@ -139,7 +139,7 @@ def runModel(segmentLoop):
         
     return energyLossDay
         
-# # Test
+# # Test - Uncomment this entire section by highlighitng and doing Ctrl + 1
 # #####################################################################################
 # etaFerm = 0.9
 # etaFilt = 0.9
