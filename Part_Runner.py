@@ -5,6 +5,8 @@
 # Section: <4>
 # Team: <59>
 
+from Model import runModel
+
 pipes = [
     {"name": "Salvage", "options": [
         {"diameter": 0.10, "cost": 1000, "darcy": 0.05},
@@ -170,40 +172,31 @@ def getValveValue(name, diameter, key):
 step = 0
 cost = 0
 
-def runParts(currStep, currCost):
+def runParts(currStep, currCost, runLevel, segmentVals):
     step = currStep
     cost = currCost
+    level = runLevel + 1
     
     diameters = [0.10, 0.11, 0.12, 0.13, 0.14, 0.15]
     
     for diameter in diameters:
         for pi in pipes:
             piname = pi["name"]
-            for diaTrial in range(6):
-                cost += getPipeValue(piname, diameter, "cost")
-                frictFact = getPipeValue(piname, diameter, "efficiency")
+            cost += getPipeValue(piname, diameter, "cost")
+            frictFact = getPipeValue(piname, diameter, "darcy")
                 
-                for b in bends:
-                    angle = b["angle"]
-                    diam = 0.1
-                    for i in range(6):
-                        diam = round(diam, 2)
-                        cost += getBendValue(angle, diam, "cost")
-                        bendFact = getBendValue(angle, diam, "efficiency")
-                        diam += 0.01
-                        
-                        for v in valves:
-                            vname = v["name"]
-                            dia = 0.1
-                            for i in range(6):
-                                dia = round(dia, 2)
-                                cost += getValveValue(vname, dia, "cost")
-                                #efficiency += getValveValue(vname, dia, "efficiency")
-                                dia += 0.01
-                                step += 1
-                                if step % 100 == 0:
-                                    print(step)
-                                # if(efficiency / cost > max):
-                                #     max = efficiency / cost
+            for v in valves:
+                vname = v["name"]
+                cost += getValveValue(vname, diameter, "cost")
+                valCoeff = getValveValue(vname, diameter, "flowCoeff")
+                
+                partLoop = [diameter, frictFact, valCoeff]
+                segmentVals[2] = partLoop
+                runModel(segmentVals)
+                
+                step += 1
+                    # print(step)
+                # if(efficiency / cost > max):
+                #     max = efficiency / cost
 # print(max)
     return step

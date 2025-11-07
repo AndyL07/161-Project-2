@@ -30,11 +30,14 @@ def valveLoss(slurryIn, resistanceCoefficent, radius):
     energyLoss = mDot * headLoss * GRAVITY
     return energyLoss
 
-def leakLoss(slurryIn, pressure, velocity):
+def leakLoss(slurryIn):
+    density = slurryIn.getDensity()
+    flowRate = slurryIn.getVolFlowRate()
+    velocity = calcFluidSpeed(flowRate, 0.05)
     density = slurryIn.getDensity()
     flowRate = slurryIn.getVolFlowRate()
     mDot = density * flowRate
     # thermalLoss = mDot * specHeatCapacity * tempChange
-    pressureLoss = mDot * (pressure / density)
-    kineticLoss = (1/2) * mDot * velocity
-    return (pressureLoss + kineticLoss)
+    #pressureLoss = mDot * (pressure / density)
+    kineticLoss = (1/2) * mDot * (velocity ** 2)
+    return (kineticLoss / (GRAVITY * mDot))

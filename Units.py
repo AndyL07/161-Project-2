@@ -14,6 +14,7 @@ from Fermenter import Fermenter
 from Filtration import Filtration
 from Distiller import Distiller
 from Dehydrator import Dehydrator
+from Flow_Generator import getFlows
 
 # Unit data
 fermenters = [
@@ -58,16 +59,21 @@ def getMaterialRemovalValue(name, key):
 
 # Initializae loop variables
 printUnits = False
-fermRun = 0
-filtRun = 0
-distRun = 0
-dehyRun = 0
-values = [[[[0 for i in range(4)] for j in range(4)] for k in range(4)] for l in range(4)] for m in range()
+fermRun = -1
+filtRun = -1
+distRun = -1
+dehyRun = -1
+flowRun = -1
+flowRates = flowRates = getFlows(0.01, 1, 0.01)
+purityCount = 0
+# print(flowRates)
+values = [[[[[0 for m in flowRates] for i in range(4)] for j in range(4)] for k in range(4)] for l in range(4)]
+# print(values[0][0][0][0])
 
 # Loop
 for f in fermenters:
     fermRun += 1
-    distRun = 0
+    distRun = -1
     
     efficiency = 0
     cost = 0
@@ -78,7 +84,7 @@ for f in fermenters:
     
     for d in distillers:
         distRun += 1
-        dehyRun = 0
+        dehyRun = -1
         
         dname = d["name"]
         etaDist = getDistillerValue(dname, "efficiency")
@@ -86,7 +92,7 @@ for f in fermenters:
         
         for dehyd in materialRemoval:
             dehyRun += 1
-            filtRun = 0
+            filtRun = -1
             
             dehydname = dehyd["name"]
             etaDehy = getMaterialRemovalValue(dehydname, "efficiency")
@@ -94,36 +100,53 @@ for f in fermenters:
             
             for m in materialRemoval:
                 filtRun += 1
+                flowRun = -1
                 
                 mname = m["name"]
                 etaFilt = getMaterialRemovalValue(mname, "efficiency")
                 cost += getMaterialRemovalValue(mname, "cost")
                 
-                # Initializing objects
-                volFlowRate = 0.04
-                slurry = Slurry(0.0, 0.20, 0.60, 0.20, volFlowRate)
-                ferm = Fermenter(etaFerm, 46600, printUnits)
-                filt = Filtration(etaFilt, 48800, printUnits)
-                dist = Distiller(etaDist, 47004, printUnits)
-                dehy = Dehydrator(etaDehy, 48800, printUnits)
-                
-                # Running Model
-                ferm.ferment(slurry)
-                filt.filt(slurry)
-                dist.distill(slurry)
-                dehy.dehydrate(slurry)
-                
-                # Data
-                purity = slurry.getPurity()
-                if purity >= 0.98:
-                    values[fermRun - 1][filtRun - 1][distRun - 1][dehyRun - 1] = 1
-                
-                # Print values
-                print("\n--------------------------------------------")
-                print("Fermenter:", fermRun, fname)
-                print("Filter:", filtRun, mname)
-                print("Distiller:", distRun, dname)
-                print("Dehydrator:", dehyRun, dehydname)
-                print("Purity:", purity)
-                print()
-                print(values)
+                for flow in flowRates:
+                    flowRun += 1
+                    
+                    # Initializing objects
+                    slurry = Slurry(0.0, 0.20, 0.60, 0.20, flow)
+                    ferm = Fermenter(etaFerm, 46600, printUnits)
+                    filt = Filtration(etaFilt, 48800, printUnits)
+                    dist = Distiller(etaDist, 47004, printUnits)
+                    dehy = Dehydrator(etaDehy, 48800, printUnits)
+                    
+                    initDen = slurry.getDensity()
+                    
+                    # Running Model
+                    ferm.ferment(slurry)
+                    filt.filt(slurry)
+                    dist.distill(slurry)
+                    dehy.dehydrate(slurry)
+                    
+                    gal_m3 = 264.172
+                    sec_day = 60 * 60 * 24
+                    MJ_gal = 80.1
+                    
+                    in_speed = flow * gal_m3 * sec_day # Inputted volumetric flow rate in gal/day
+                    initMdot = in_speed * initDen # Inputted mass flow rate in kg/day
+                    outMdot = slurry.getTotMassPerc() * initMdot # Outputted mass flow rate in kg/day
+                    ethGalDay = outMdot / slurry.getDensity() # Outputted "pure" ethanol in gal/day
+                    
+                    # Data
+                    purity = slurry.getPurity()
+                    if purity >= 0.98 and ethGalDay >= 100000:
+                        values[fermRun][filtRun][distRun][dehyRun][flowRun] = 1
+                        purityCount += 1
+                    
+                    # Print values
+                    print("\n--------------------------------------------")
+                    print("Fermenter:", fermRun, fname)
+                    print("Filter:", filtRun, mname)
+                    print("Distiller:", distRun, dname)
+                    print("Dehydrator:", dehyRun, dehydname)
+                    print("Flow Run:", flowRun, flow)
+                    print("Purity:", purity)
+                    print()
+print(values)
+print(purityCount)

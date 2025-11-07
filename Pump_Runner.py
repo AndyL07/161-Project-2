@@ -83,7 +83,7 @@ def getPumpValue(name, length, key):
                     return option.get(key)
     return None
 
-def runPumps(currStep, currCost):
+def runPumps(currStep, currCost, segmentVals):
     step = currStep
     cost = currCost
     
@@ -93,7 +93,8 @@ def runPumps(currStep, currCost):
         cost += getPumpValue(pname, length, "cost")
         etaPump = getPumpValue(pname, length, "efficiency")
             
-        step = runParts(step, cost)
-        print("Working2:", step)
+        segmentVals[1] = etaPump
+        step = runParts(step, cost, 0, segmentVals)
+        # print("Working2:", step)
     return step
 #runPumps(0, 0)
