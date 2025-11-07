@@ -32,4 +32,4 @@ def getDecisionMatrixValue(site, cost, efficiency):
     #return [0.4 * normalizedCost, 0.4 * normalizedEfficiency, 0.2 * normalizedEthical]
     
     #Returns one value
-    return ((0.4 * normalizedCost) + (0.4 * normalizedEfficiency) + (0.4 * normalizedEthical))
+    return ((0.4 * normalizedCost) + (0.4 * normalizedEfficiency) + (0.2 * normalizedEthical))
