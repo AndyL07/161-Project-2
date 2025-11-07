@@ -8,30 +8,30 @@
 def getDimensions(site):
     if site == 3:
         segmentList = [
-            # [length, bend1 angle, bend2 angle]
-            [10, 0, 0],
-            [20, 0, 0],
-            [10, 90, 90],
-            [20, 0, 0],
-            [10, 0, 0]
+            # [length, bend1 angle, bend2 angle, change in height]
+            [10, 0, 0, 10],
+            [20, 0, 0, 0],
+            [10, 90, 90, 10],
+            [20, 0, 0, 20],
+            [10, 0, 0, 0]
             ]
     elif site == 2:
         segmentList = [
             # [length, bend1 angle, bend2 angle]
-            [10, 0, 0],
-            [10, 0, 0],
-            [10, 0, 0],
-            [16.64, 30, 60],
-            [10, 0, 0]
+            [10, 0, 0, 10],
+            [10, 0, 0, 0],
+            [10, 0, 0, 0],
+            [16.64, 30, 60, 15],
+            [10, 0, 0, 0]
             ]
     else:
         segmentList = [
             # [length, bend1 angle, bend2 angle]
-            [10, 0, 0],
-            [10, 0, 0],
-            [10, 90, 90],
-            [10, 90, 90],
-            [10, 0, 0]
+            [10, 0, 0, 10],
+            [10, 0, 0, 0],
+            [10, 90, 90, 10],
+            [10, 90, 90, 0],
+            [10, 0, 0, 0]
             ]
         
     return segmentList

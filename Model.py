@@ -54,11 +54,12 @@ def runModel(segmentLoop):
         length = segment[0]
         bendAngle1 = segment[1]
         bendAngle2 = segment[2]
+        deltaH = segment[3]
         bendFact1 = getBendValue(bendAngle1, diameter, "pipeLossCoeff")
         bendFact2 = getBendValue(bendAngle2, diameter, "pipeLossCoeff")
         
         # Use the values to create a size and parts list
-        segSize = [diameter, length]
+        segSize = [diameter, length, deltaH]
         segPartList = [frictFact, 0, valveCoeff, bendFact1, bendFact2]
         
         # Input the current sizes and parts list to the entry for the given segment
@@ -124,7 +125,7 @@ def runModel(segmentLoop):
     initMdot = in_speed * initDen # Inputted mass flow rate in kg/day
     outMdot = slurry.getTotMassPerc() * initMdot # Outputted mass flow rate in kg/day
     ethGalDay = outMdot / slurry.getDensity() # Outputted "pure" ethanol in gal/day
-    energy = ethGalDay * MJ_gal # Energy of outputted "pure"ethan in MJ
+    energy = ethGalDay * MJ_gal # Energy of outputted "pure" ethanol in MJ
     
     # Energy conversions 
     energyLossDay += eLossDot * sec_day # Convert J/sec to J/day

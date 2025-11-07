@@ -6,12 +6,16 @@
 # Team: <59>
 
 from Proj2EnergyFunctions import * 
+from Slurry import Slurry
+
+GRAVITY = 9.81
 
 class Segment():
-    def __init__(self,  diameter, length, frictFact, valveCoeffOut, valveCoeffIn, bendFact1, bendFact2):
+    def __init__(self,  diameter, length, heightChange, frictFact, valveCoeffOut, valveCoeffIn, bendFact1, bendFact2):
         self.dia = diameter
         self.rad = self.dia / 2
         self.len = length
+        self.deltaH = heightChange
         self.frictFact = frictFact
         self.valveCoeff1 = valveCoeffOut
         self.valveCoeff2 = valveCoeffIn
@@ -20,6 +24,7 @@ class Segment():
         self.energyLoss = 0
         
     def segLoss(self, slurryIn):
+        self.energyLoss += slurryIn.getDensity() * slurryIn.getVolFlowRate() * GRAVITY * self.deltaH
         self.energyLoss += valveLoss(slurryIn, self.valveCoeff1, self.rad)
         self.energyLoss += bendLoss(slurryIn, self.bendFact1, self.rad)
         self.energyLoss += bendLoss(slurryIn, self.bendFact2, self.rad)

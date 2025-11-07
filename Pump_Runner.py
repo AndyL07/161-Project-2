@@ -99,4 +99,3 @@ def runPumps(currStep, currCost, segmentVals):
         step = runParts(step, cost, 0, segmentVals)
         # print("Working2:", step)
     return step
-#runPumps(0, 0)

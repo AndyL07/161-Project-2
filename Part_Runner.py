@@ -175,7 +175,6 @@ cost = 0
 def runParts(currStep, currCost, runLevel, segmentVals):
     step = currStep
     cost = currCost
-    level = runLevel + 1
     
     diameters = [0.10, 0.11, 0.12, 0.13, 0.14, 0.15]
     
@@ -193,6 +192,8 @@ def runParts(currStep, currCost, runLevel, segmentVals):
                 partLoop = [diameter, frictFact, valCoeff]
                 segmentVals[2] = partLoop
                 runModel(segmentVals)
+                
+                # put decision matrix here, should input cost and energy and output the best option
                 
                 step += 1
                     # print(step)
