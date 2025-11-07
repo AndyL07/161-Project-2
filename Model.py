@@ -13,6 +13,7 @@ from Distiller import Distiller
 from Dehydrator import Dehydrator
 from Pipe_Segment import Segment
 from Proj2EnergyFunctions import *
+from Part_Runner import getBendValue
 
 # Whether or not to print slurry after each unit operation
 printUnits = False
@@ -40,16 +41,25 @@ energyLossDay = 0
 
 valveCoeff1 = 0
 valveCoeff = 800
-bendFact1 = 0.1
-bendFact2 = 0.1
+bendFact1 = 0.3
+bendFact2 = 0.3
 frictFact = 0.1
 
 ##################################
 seg1Dia = 0.1
 seg1Len = 10
 
-seg1Size = [seg1Dia, seg1Len]
-seg1Parts = [frictFact, valveCoeff1, valveCoeff, bendFact1, bendFact2]
+diameter = 0.1
+bendAngle1 = 90
+bendAngle2 = 90
+
+seg1Dims = [seg1Len, bendAngle1, bendAngle2]
+seg1Loop = [[etaFerm, etaFilt, etaDist, etaDehy], etaPump, [diameter, frictFact, valveCoeff]]
+
+seg1Size = [seg1Loop[2][0], seg1Dims[0]]
+seg1Parts = [seg1Loop[2][1], 0, seg1Loop[2][2], getBendValue(seg1Dims[1], seg1Loop[2][0], "pipeLossCoeff"), getBendValue(seg1Dims[2], seg1Loop[2][0], "pipeLossCoeff")]
+# seg1Size = [seg1Dia, seg1Len]
+# seg1Parts = [frictFact, valveCoeff1, valveCoeff, bendFact1, bendFact2]
 segment1 = Segment(*seg1Size, *seg1Parts)
 
 seg2Parts = [frictFact, valveCoeff, valveCoeff, bendFact1, bendFact2]

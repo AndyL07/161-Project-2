@@ -272,7 +272,7 @@ def getValveValue(name, diameter, key):
             for option in valve["options"]:
                 if option["diameter"] == diameter:
                     return option.get(key)
-<<<<<<< Updated upstream
+#<<<<<<< Updated upstream
     return None
 
 max = 0
@@ -293,7 +293,7 @@ for f in fermenters:
         efficiency += getDistillerValue(dname, "efficiency")
         cost += getDistillerValue(dname, "cost")
         
-        for dehyd in distillers:
+        for dehyd in materialRemoval:
             dehydname = dehyd["name"]
             efficiency += getDistillerValue(dehydname, "efficiency")
             cost += getDistillerValue(dehydname, "cost")
@@ -346,6 +346,6 @@ print(max)
 
 
 
-=======
-    return None
->>>>>>> Stashed changes
+#=======
+    #return None
+#>>>>>>> Stashed changes
