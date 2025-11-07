@@ -4,7 +4,7 @@ def getDecisionMatrixValue(site, cost, efficiency):
     normalizedCost = 0
     normalizedEfficiency = 0
     
-    maxEfficiency = .98
+    maxEfficiency = 15
     maxCost = 10000000
     
     if(site == 1):
