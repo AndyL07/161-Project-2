@@ -1,8 +1,11 @@
 #Takes in site, cost, effiency as well as the maxCost and maxEfficiency
 #Most likely will need to run code with all three sites to get maxCost/efficiency
-def getDecisionMatrixValue(site, cost, efficiency, maxCost, maxEfficiency):
+def getDecisionMatrixValue(site, cost, efficiency):
     normalizedCost = 0
     normalizedEfficiency = 0
+    
+    maxEfficiency = .98
+    maxCost = 10000000
     
     if(site == 1):
         cost += 6660000
