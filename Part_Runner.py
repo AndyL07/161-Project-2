@@ -133,28 +133,29 @@ def runParts(currStep, currCost, segmentVals, currMaxVal, currMaxSegVals, currMa
                 partLoop = [diameter, frictFact, valCoeff]
                 segmentVals[2] = partLoop
                 
-                for site in [1, 2, 3]:
-                    val = runModel(segmentVals, costs, site, False)
+                site = 2
+                
+                val = runModel(segmentVals, costs, site, False)
+                
+                step += 1
+                
+                if val > maxVal:
+                    maxVal = val
+                    maxSite = site
                     
-                    step += 1
+                    listNum = 0
+                    entryNum = 0
                     
-                    if val > maxVal:
-                        maxVal = val
-                        maxSite = site
-                        
-                        listNum = 0
+                    for lists in segmentVals:
+                        for entry in lists:
+                            maxSegVals[listNum][entryNum] = segmentVals[listNum][entryNum]
+                            entryNum += 1
                         entryNum = 0
-                        
-                        for lists in segmentVals:
-                            for entry in lists:
-                                maxSegVals[listNum][entryNum] = segmentVals[listNum][entryNum]
-                                entryNum += 1
-                            entryNum = 0
-                            listNum += 1
-                        for i in range(4):
-                            maxSegVals[0][i] = maxSegVals[0][i].getEta()
-                        print(f"New Max Val: {maxVal:}")
-                        print(maxSegVals)
+                        listNum += 1
+                    for i in range(4):
+                        maxSegVals[0][i] = maxSegVals[0][i].getEta()
+                    print(f"New Max Val: {maxVal:}")
+                    print(maxSegVals)
                     
 # print(max)
     return [step, maxVal, maxSegVals, maxSite]
