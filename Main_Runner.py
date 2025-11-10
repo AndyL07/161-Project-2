@@ -148,7 +148,13 @@ for f in fermenters:
                             #print(maxSegVals)
                             #print("-------------------------")
 
+totCost = 0
+for lists in costs:
+    for cost in lists:
+        totCost += cost
+
 # Prints the final step count (should be 7,539,120)
 print("DONE!!!! -", step)
 print("Best Values:", maxSegVals)
+print("Best Cost:", totCost)
 print("Best Site:", maxSite)
