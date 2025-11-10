@@ -1,3 +1,4 @@
+$dictionary for each part 
 fermenters = [
     {"name": "Scrap", "efficiency": 0.5, "cost": 320000, "energy": 46600},
     {"name": "Average", "efficiency": 0.75, "cost": 380000, "energy": 47200},
@@ -224,6 +225,7 @@ valves = [
     ]}
 ]
 
+#Getter functions for each dictionary
 def getFermenterValue(name, key):
     for item in fermenters:
         if item["name"] == name:
@@ -349,3 +351,4 @@ print(max)
 #=======
     #return None
 #>>>>>>> Stashed changes
+
