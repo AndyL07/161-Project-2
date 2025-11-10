@@ -150,4 +150,5 @@ for f in fermenters:
 
 # Prints the final step count (should be 7,539,120)
 print("DONE!!!! -", step)
-print(maxSegVals)
+print("Best Values:", maxSegVals)
+print("Best Site:", maxSite)
