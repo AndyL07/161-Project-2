@@ -85,17 +85,19 @@ def getPumpValue(name, length, key):
                     return option.get(key)
     return None
 
-def runPumps(currStep, currCost, segmentVals):
+def runPumps(currStep, currCosts, segmentVals, currMaxVal, currMaxSegVals):
     step = currStep
-    cost = currCost
+    costs = currCosts
+    maxVal = currMaxVal
+    maxSegVals = currMaxSegVals
     
     for p in pumps:
         pname = p["name"]
         length = 9
-        cost += getPumpValue(pname, length, "cost")
+        costs[1][0] = getPumpValue(pname, length, "cost") * segmentVals[0][4]
         etaPump = getPumpValue(pname, length, "efficiency")
             
-        segmentVals[1] = etaPump
-        step = runParts(step, cost, 0, segmentVals)
+        segmentVals[1] = [etaPump]
+        [step, maxVal, maxSegVals] = runParts(step, costs, segmentVals, maxVal, maxSegVals)
         # print("Working2:", step)
-    return step
+    return [step, maxVal, maxSegVals]

@@ -67,10 +67,13 @@ distRun = -1
 dehyRun = -1
 flowRun = -1
 step = 0
+maxVal = 0
 
 flowRates = getFlows(0.01, 1, 0.01)
 
 segmentVals = [[], [], []]
+maxSegVals = [[0, 0, 0, 0, 0], [0], [0,  0, 0]]
+costs = [[0, 0, 0, 0, 0], [0], [0,  0, 0]]
 
 
 # Loop
@@ -79,14 +82,11 @@ for f in fermenters:
     fermRun += 1
     distRun = -1
     
-    # Cost calculating doesn't work yet, but I will work on it when I can
-    cost = 0
-    
     # Gets data from fermenter
     fname = f["name"]
     etaFerm = getFermenterValue(fname, "efficiency")
     watFerm = getFermenterValue(fname, "energy")
-    cost += getFermenterValue(fname, "cost")
+    costs[0][0] = getFermenterValue(fname, "cost")
     
     for d in distillers:
         # Increments this counter and resets lower one
@@ -97,7 +97,7 @@ for f in fermenters:
         dname = d["name"]
         etaDist = getDistillerValue(dname, "efficiency")
         watDist = getDistillerValue(dname, "energy")
-        cost += getDistillerValue(dname, "cost")
+        costs[0][2] = getDistillerValue(dname, "cost")
         
         for dehyd in materialRemoval:
             # Increments this counter and resets lower one
@@ -108,7 +108,7 @@ for f in fermenters:
             dehydname = dehyd["name"]
             etaDehy = getMaterialRemovalValue(dehydname, "efficiency")
             watDehy = getMaterialRemovalValue(dehydname, "efficiency")
-            cost += getMaterialRemovalValue(dehydname, "cost")
+            costs[0][3] = getMaterialRemovalValue(dehydname, "cost")
             
             for m in materialRemoval:
                 # Increments this counter and resets lower one
@@ -119,7 +119,7 @@ for f in fermenters:
                 mname = m["name"]
                 etaFilt = getMaterialRemovalValue(mname, "efficiency")
                 watFilt = getMaterialRemovalValue(mname, "energy")
-                cost += getMaterialRemovalValue(mname, "cost")
+                costs[0][1] = getMaterialRemovalValue(mname, "cost")
                 
                 for flow in flowRates:
                     # Increments this counter
@@ -139,10 +139,13 @@ for f in fermenters:
                         segmentVals[0] = mainLoop
                         
                         # Increases step by running inner loops
-                        step = runPumps(step, cost, segmentVals)
-                        
-                        # Prints every 100 runs of this loop
-                        if step % (720 * 100) == 0:
-                            print(step)
+                        [step, maxVal, maxSegVals] = runPumps(step, costs, segmentVals, maxVal, maxSegVals)
+
+                        # Prints every 50 runs of this loop
+                        if step % (720 * 3 * 50) == 0:
+                            print(f"Step: {step} --- Max Val: {maxVal}")
+                            #print(maxSegVals)
+                            #print("-------------------------")
 # Prints the final step count (should be 7,539,120)
 print("DONE!!!! -", step)
+print(maxSegVals)

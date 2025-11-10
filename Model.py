@@ -16,30 +16,35 @@ from Proj2EnergyFunctions import *
 from Pipe_Bends import getBendValue
 #from Part_Runner import getBendValue
 from Sites import getDimensions
+from decisionMatrixCode import getDecisionMatrixValue
 
-# Whether or not to print slurry after each unit operation
-printUnits = False
-site = 1
-
-siteDims = getDimensions(site)
-
-def runModel(segmentLoop):
+def runModel(segmentLoop, currCosts, site, prints):
+    # Copys the cost list
+    costs = currCosts
+    
+    # Whether or not to print slurry after each unit operation
+    printUnits = prints
+    
+    # Get lengths and angles of site segments
+    siteDims = getDimensions(site)
+    
     # Initializes slurry and unit operators
     volFlowRate = segmentLoop[0][4]
     ferm = segmentLoop[0][0]
     filt = segmentLoop[0][1]
     dist = segmentLoop[0][2]
     dehy = segmentLoop[0][3]
-    etaPump = segmentLoop[1]
+    etaPump = segmentLoop[1][0]
     
     # Create slurry
     slurry = Slurry(0.0, 0.20, 0.60, 0.20, volFlowRate)
     
     # Initial Conditions
     initDen = slurry.getDensity()
-    initEnergy = 1000000 * (10 ** (2 * 3))
+    energyUsage = initDen * 9.81 * volFlowRate * 9 / etaPump # pump energy usage
+    # initEnergy = 1000000 * (10 ** (2 * 3))
     eLossDot = 0
-    energyLossDay = 0
+    
     
     # Constant values from loop
     diameter = segmentLoop[2][0]
@@ -55,8 +60,13 @@ def runModel(segmentLoop):
         bendAngle1 = segment[1]
         bendAngle2 = segment[2]
         deltaH = segment[3]
-        bendFact1 = getBendValue(bendAngle1, diameter, "pipeLossCoeff")
+        bendFact1 = getBendValue(bendAngle2, diameter, "pipeLossCoeff")
         bendFact2 = getBendValue(bendAngle2, diameter, "pipeLossCoeff")
+        
+        # Calculate the cost of the bends
+        bendCost = getBendValue(bendAngle1, diameter, "cost")
+        bendCost += getBendValue(bendAngle2, diameter, "cost")
+        costs[2][2] = bendCost
         
         # Use the values to create a size and parts list
         segSize = [diameter, length, deltaH]
@@ -88,24 +98,27 @@ def runModel(segmentLoop):
         print("Initial")
         print(slurry)
     
-    energyLossDay += (1 - etaPump) * initEnergy
+    # energyUsage += (1 - etaPump) * initEnergy
     
     # Segment 1 - Fermenter
     eLossDot += segment1.segLoss(slurry)
-    energyLossDay += ferm.ferment(slurry)
-    #print(leakLoss(slurry))
+    energyUsage += ferm.getWattage()
+    eLossDot += ferm.ferment(slurry, segmentSizes, diameter)
     
     # Segment 2 - Filtration
     eLossDot += segment2.segLoss(slurry)
-    energyLossDay += filt.filt(slurry)
+    energyUsage += filt.getWattage()
+    eLossDot += filt.filt(slurry, segmentSizes, diameter)
     
     # Segment 3 - Distillation
     eLossDot += segment3.segLoss(slurry)
-    energyLossDay += dist.distill(slurry)
+    energyUsage += dist.getWattage()
+    eLossDot += dist.distill(slurry, segmentSizes, diameter)
     
     # Segment 4 - Dehydration
     eLossDot += segment4.segLoss(slurry)
-    energyLossDay += dehy.dehydrate(slurry)
+    energyUsage += dehy.getWattage()
+    eLossDot += dehy.dehydrate(slurry, segmentSizes, diameter)
     
     # Segment 5 - Output
     eLossDot += segment5.segLoss(slurry)
@@ -128,20 +141,37 @@ def runModel(segmentLoop):
     energy = ethGalDay * MJ_gal # Energy of outputted "pure" ethanol in MJ
     
     # Energy conversions 
-    energyLossDay += eLossDot * sec_day # Convert J/sec to J/day
-    energyLossDay /= 10 ** (2 * 3) # Convert J/day to MJ/day
+    energyUsage += eLossDot * sec_day # Convert J/sec to J/day
+    energyUsage /= 10 ** (2 * 3) # Convert J/day to MJ/day
+    totEff = energy/energyUsage 
     
     # Final Prints
     if printUnits:
         print(f"Input Speed: {in_speed:2.3f} gal/day")
         print(f"Output Speed: {ethGalDay:2.3f} gal/day")
         print(f"Outputted Ethanol Energy: {energy:2.3f} MJ/day")
-        print(f"Total Energy Loss: {energyLossDay:2.3f} MJ")
+        print(f"Total Energy Loss: {energyUsage:2.3f} MJ")
+        print(f"Total Efficieny: {totEff:2.3f}")
         
-    return energyLossDay
+    totCost = 0
+    for lists in costs:
+        for cost in lists:
+            totCost += cost
+        
+    matrixVal = getDecisionMatrixValue(site, totCost, totEff)
+    
+    if printUnits:
+        print(f"Total Cost: ${totCost:2.2f}")
+        print(f"Matrix Val: {matrixVal:2.5f}")
+        
+    # print(f"Cost: {totCost:2.2f} --- {totEff:2.3f}")
+    # print(f"Final Value: {matrixVal:2.3f}")
+    return matrixVal
         
 # # Test - Uncomment this entire section by highlighitng and doing Ctrl + 1
 # #####################################################################################
+# printUnits = True
+
 # etaFerm = 0.9
 # etaFilt = 0.9
 # etaDist = 0.9
@@ -163,7 +193,42 @@ def runModel(segmentLoop):
 # bendFact1 = getBendValue(bendAngle1, diameter, "pipeLossCoeff")
 # bendFact2 = getBendValue(bendAngle2, diameter, "pipeLossCoeff")
 
-# segLoop = [[ferm, filt, dist, dehy, volFlowRate], etaPump, [diameter, frictFact, valveCoeff]]
+# segLoop = [[ferm, filt, dist, dehy, volFlowRate], [etaPump], [diameter, frictFact, valveCoeff]]
+# currCosts = [[0, 0, 0, 0, 0], [0], [0,  0, 0]]
+# site = 1
 
-# runModel(segLoop)
+# runModel(segLoop, currCosts, site, printUnits)
 # #####################################################################################
+
+
+# Test 2 - Uncomment this entire section by highlighitng and doing Ctrl + 1
+#####################################################################################
+printUnits = True
+
+etaFerm = 0.95
+etaFilt = 0.75
+etaDist = 0.9
+etaDehy = 0.9
+etaPump = 0.8
+volFlowRate = 0.12
+
+ferm = Fermenter(etaFerm, 48000, printUnits)
+filt = Filtration(etaFilt, 49536, printUnits)
+dist = Distiller(etaDist, 47812, printUnits)
+dehy = Dehydrator(etaDehy, 50350, printUnits)
+
+diameter = 0.15
+length = 10
+frictFact = 0.002
+valveCoeff = 500
+bendAngle1 = 90
+bendAngle2 = 90
+bendFact1 = getBendValue(bendAngle1, diameter, "pipeLossCoeff")
+bendFact2 = getBendValue(bendAngle2, diameter, "pipeLossCoeff")
+
+segLoop = [[ferm, filt, dist, dehy, volFlowRate], [etaPump], [diameter, frictFact, valveCoeff]]
+currCosts = [[0, 0, 0, 0, 0], [0], [0,  0, 0]]
+site = 1
+
+runModel(segLoop, currCosts, site, printUnits)
+#####################################################################################

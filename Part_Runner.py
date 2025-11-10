@@ -169,35 +169,51 @@ def getValveValue(name, diameter, key):
 #<<<<<<< Updated upstream
     return None
 
-step = 0
-cost = 0
-
-def runParts(currStep, currCost, runLevel, segmentVals):
+def runParts(currStep, currCost, segmentVals, currMaxVal, currMaxSegVals):
     step = currStep
-    cost = currCost
+    costs = currCost
+    maxVal = currMaxVal
+    maxSegVals = currMaxSegVals
     
     diameters = [0.10, 0.11, 0.12, 0.13, 0.14, 0.15]
     
     for diameter in diameters:
         for pi in pipes:
             piname = pi["name"]
-            cost += getPipeValue(piname, diameter, "cost")
+            costs[2][0] = getPipeValue(piname, diameter, "cost")
             frictFact = getPipeValue(piname, diameter, "darcy")
                 
             for v in valves:
                 vname = v["name"]
-                cost += getValveValue(vname, diameter, "cost")
+                costs[2][1] = getValveValue(vname, diameter, "cost")
                 valCoeff = getValveValue(vname, diameter, "flowCoeff")
                 
                 partLoop = [diameter, frictFact, valCoeff]
                 segmentVals[2] = partLoop
-                runModel(segmentVals)
                 
-                # put decision matrix here, should input cost and energy and output the best option
+                val = runModel(segmentVals, costs, 2, False)
                 
                 step += 1
-                    # print(step)
-                # if(efficiency / cost > max):
-                #     max = efficiency / cost
+                
+                if val > maxVal:
+                    maxVal = val
+                    
+                    listNum = 0
+                    entryNum = 0
+                    
+                    for lists in segmentVals:
+                        for entry in lists:
+                            maxSegVals[listNum][entryNum] = segmentVals[listNum][entryNum]
+                            entryNum += 1
+                        entryNum = 0
+                        listNum += 1
+                    for i in range(4):
+                        maxSegVals[0][i] = maxSegVals[0][i].getEta()
+                    print(f"New Max Val: {maxVal:}")
+                    print(maxSegVals)
+                    
+                        # print(step)
+                    # if(efficiency / cost > max):
+                    #     max = efficiency / cost
 # print(max)
-    return step
+    return [step, maxVal, maxSegVals]

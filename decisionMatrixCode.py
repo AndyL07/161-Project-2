@@ -5,7 +5,7 @@ def getDecisionMatrixValue(site, cost, efficiency):
     normalizedEfficiency = 0
     normalizedEthical= 0
     
-    maxEfficiency = 15
+    maxEfficiency = 40
     maxCost = 20000000
     maxEthical = 20
     
@@ -30,6 +30,11 @@ def getDecisionMatrixValue(site, cost, efficiency):
     
     #Returns three seperate values as array
     #return [0.4 * normalizedCost, 0.4 * normalizedEfficiency, 0.2 * normalizedEthical]
-    
-    #Returns one value
-    return ((0.4 * normalizedCost) + (0.4 * normalizedEfficiency) + (0.2 * normalizedEthical))
+   
+    # Returns one values    
+    finalVal = ((0.4 * normalizedCost) + (0.4 * normalizedEfficiency) + (0.2 * normalizedEthical))
+    if finalVal > 1:
+        print(f"Cost: {normalizedCost:2.3f} --- Eff: {normalizedEfficiency:2.3f} --- Eth: {normalizedEthical:2.3f}")
+        print(efficiency)
+        print(finalVal)
+    return finalVal

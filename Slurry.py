@@ -19,6 +19,7 @@ class Slurry():
         self.initVolFlow = volFlowRate
         self.initVol = 1.0
         self.initVol = self.getVolumePerc()
+        self.initMass = self.initVol / self.getDensity()
         
     def setEth(self, eth):
         self.ethanol = eth
@@ -44,6 +45,15 @@ class Slurry():
     def getFib(self):
         return self.fiber
     
+    def getInitVol(self):
+        return self.initVol
+    
+    def getInitFlow(self):
+        return self.initVolFlow
+    
+    def getInitMass(self):
+        return self.initMass
+    
     def sumWeights(self):
         return self.ethanol + self.sugar + self.water + self.fiber
     
@@ -59,7 +69,7 @@ class Slurry():
     
     def getDensity(self):
         solMass = self.sugar + self.water
-        solDen = (self.sugar / solMass) * sugWatPercDen + watDen
+        solDen = (self.sugar / solMass) *    sugWatPercDen + watDen
         
         solVol = solMass / solDen
         ethVol = self.ethanol / ethDen
