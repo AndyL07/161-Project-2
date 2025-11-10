@@ -22,6 +22,7 @@ class Distiller():
         slurryIn.setSug(slurryIn.getSug() * multFactor)
         slurryIn.setFib(slurryIn.getFib() * multFactor)
         
+        # Calculates loss from waste energy
         density = 1.815
         height = 0
         for i in range(3):
@@ -43,7 +44,3 @@ class Distiller():
     
     def getEta(self):
         return self.eta
-
-        # slurryIn.normalize()
-        # print("Normalizing")
-        # print(slurryIn)

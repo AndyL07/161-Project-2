@@ -18,6 +18,7 @@ class Fermenter():
         slurryIn.setEth(0.51 * slurryIn.getSug() * self.eta)
         slurryIn.setSug(slurryIn.getSug() * (1 - self.eta))
         
+        # Calculates loss from waste energy
         density = 1.815
         height = 0
         for i in range(1):
@@ -39,7 +40,3 @@ class Fermenter():
     
     def getEta(self):
         return self.eta
-        
-        # slurryIn.normalize()
-        # print("Normalizing")
-        # print(slurryIn)

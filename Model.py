@@ -14,7 +14,6 @@ from Dehydrator import Dehydrator
 from Pipe_Segment import Segment
 from Proj2EnergyFunctions import *
 from Pipe_Bends import getBendValue
-#from Part_Runner import getBendValue
 from Sites import getDimensions
 from decisionMatrixCode import getDecisionMatrixValue
 
@@ -168,7 +167,7 @@ def runModel(segmentLoop, currCosts, site, prints):
     # print(f"Final Value: {matrixVal:2.3f}")
     return matrixVal
         
-# # Test - Uncomment this entire section by highlighitng and doing Ctrl + 1
+# # Test 1 (basic) - Uncomment this entire section by highlighitng and doing Ctrl + 1
 # #####################################################################################
 # printUnits = True
 
@@ -185,7 +184,6 @@ def runModel(segmentLoop, currCosts, site, prints):
 # dehy = Dehydrator(etaDehy, 48800, printUnits)
 
 # diameter = 0.1
-# length = 10
 # frictFact = 0.1
 # valveCoeff = 800
 # bendAngle1 = 90
@@ -201,34 +199,35 @@ def runModel(segmentLoop, currCosts, site, prints):
 # #####################################################################################
 
 
-# Test 2 - Uncomment this entire section by highlighitng and doing Ctrl + 1
-#####################################################################################
-printUnits = True
 
-etaFerm = 0.95
-etaFilt = 0.75
-etaDist = 0.9
-etaDehy = 0.9
-etaPump = 0.8
-volFlowRate = 0.12
+# # Test 2 (best value test) - Uncomment this entire section by highlighitng and doing Ctrl + 1
+# #####################################################################################
+# printUnits = True
 
-ferm = Fermenter(etaFerm, 48000, printUnits)
-filt = Filtration(etaFilt, 49536, printUnits)
-dist = Distiller(etaDist, 47812, printUnits)
-dehy = Dehydrator(etaDehy, 50350, printUnits)
+# etaFerm = 0.95
+# etaFilt = 0.75
+# etaDist = 0.9
+# etaDehy = 0.9
+# etaPump = 0.8
+# volFlowRate = 0.12
 
-diameter = 0.15
-length = 10
-frictFact = 0.002
-valveCoeff = 500
-bendAngle1 = 90
-bendAngle2 = 90
-bendFact1 = getBendValue(bendAngle1, diameter, "pipeLossCoeff")
-bendFact2 = getBendValue(bendAngle2, diameter, "pipeLossCoeff")
+# ferm = Fermenter(etaFerm, 48000, printUnits)
+# filt = Filtration(etaFilt, 49536, printUnits)
+# dist = Distiller(etaDist, 47812, printUnits)
+# dehy = Dehydrator(etaDehy, 50350, printUnits)
 
-segLoop = [[ferm, filt, dist, dehy, volFlowRate], [etaPump], [diameter, frictFact, valveCoeff]]
-currCosts = [[0, 0, 0, 0, 0], [0], [0,  0, 0]]
-site = 1
+# diameter = 0.15
+# frictFact = 0.002
+# valveCoeff = 500
+# bendAngle1 = 90
+# bendAngle2 = 90
+# bendFact1 = getBendValue(bendAngle1, diameter, "pipeLossCoeff")
+# bendFact2 = getBendValue(bendAngle2, diameter, "pipeLossCoeff")
 
-runModel(segLoop, currCosts, site, printUnits)
-#####################################################################################
+# segLoop = [[ferm, filt, dist, dehy, volFlowRate], [etaPump], [diameter, frictFact, valveCoeff]]
+# currCosts = [[0, 0, 0, 0, 0], [0], [0,  0, 0]] 
+# # Because the full loop isn't running, the cost will not agregate properly
+# site = 2
+
+# runModel(segLoop, currCosts, site, printUnits)
+# #####################################################################################

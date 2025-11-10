@@ -58,57 +58,6 @@ pipes = [
     ]}
 ]
 
-bends = [
-    {"angle": 20, "options": [
-        {"diameter": 0.10, "cost": 100, "pipeLossCoeff": 0.1},
-        {"diameter": 0.11, "cost": 149, "pipeLossCoeff": 0.1},
-        {"diameter": 0.12, "cost": 493, "pipeLossCoeff": 0.1},
-        {"diameter": 0.13, "cost": 1400, "pipeLossCoeff": 0.1},
-        {"diameter": 0.14, "cost": 3200, "pipeLossCoeff": 0.1},
-        {"diameter": 0.15, "cost": 6200, "pipeLossCoeff": 0.1},
-    ]},
-    {"angle": 30, "options": [
-        {"diameter": 0.10, "cost": 105, "pipeLossCoeff": 0.15},
-        {"diameter": 0.11, "cost": 157, "pipeLossCoeff": 0.15},
-        {"diameter": 0.12, "cost": 517, "pipeLossCoeff": 0.15},
-        {"diameter": 0.13, "cost": 1500, "pipeLossCoeff": 0.15},
-        {"diameter": 0.14, "cost": 3400, "pipeLossCoeff": 0.15},
-        {"diameter": 0.15, "cost": 6500, "pipeLossCoeff": 0.15},
-    ]},
-    {"angle": 45, "options": [
-        {"diameter": 0.10, "cost": 110, "pipeLossCoeff": 0.2},
-        {"diameter": 0.11, "cost": 164, "pipeLossCoeff": 0.2},
-        {"diameter": 0.12, "cost": 543, "pipeLossCoeff": 0.2},
-        {"diameter": 0.13, "cost": 1600, "pipeLossCoeff": 0.2},
-        {"diameter": 0.14, "cost": 3600, "pipeLossCoeff": 0.2},
-        {"diameter": 0.15, "cost": 6900, "pipeLossCoeff": 0.2},
-    ]},
-    {"angle": 60, "options": [
-        {"diameter": 0.10, "cost": 116, "pipeLossCoeff": 0.22},
-        {"diameter": 0.11, "cost": 173, "pipeLossCoeff": 0.22},
-        {"diameter": 0.12, "cost": 570, "pipeLossCoeff": 0.22},
-        {"diameter": 0.13, "cost": 1600, "pipeLossCoeff": 0.22},
-        {"diameter": 0.14, "cost": 3800, "pipeLossCoeff": 0.22},
-        {"diameter": 0.15, "cost": 7200, "pipeLossCoeff": 0.22},
-    ]},
-    {"angle": 75, "options": [
-        {"diameter": 0.10, "cost": 122, "pipeLossCoeff": 0.27},
-        {"diameter": 0.11, "cost": 181, "pipeLossCoeff": 0.27},
-        {"diameter": 0.12, "cost": 599, "pipeLossCoeff": 0.27},
-        {"diameter": 0.13, "cost": 1700, "pipeLossCoeff": 0.27},
-        {"diameter": 0.14, "cost": 3900, "pipeLossCoeff": 0.27},
-        {"diameter": 0.15, "cost": 7600, "pipeLossCoeff": 0.27},
-    ]},
-    {"angle": 90, "options": [
-        {"diameter": 0.10, "cost": 128, "pipeLossCoeff": 0.3},
-        {"diameter": 0.11, "cost": 190, "pipeLossCoeff": 0.3},
-        {"diameter": 0.12, "cost": 700, "pipeLossCoeff": 0.3},
-        {"diameter": 0.13, "cost": 1800, "pipeLossCoeff": 0.3},
-        {"diameter": 0.14, "cost": 4100, "pipeLossCoeff": 0.3},
-        {"diameter": 0.15, "cost": 8000, "pipeLossCoeff": 0.3},
-    ]}
-]
-
 valves = [
     {"name": "Salvage", "options": [
         {"diameter": 0.10, "cost": 100, "flowCoeff": 800},
@@ -152,14 +101,6 @@ def getPipeValue(name, diameter, key):
                     return option.get(key)
     return None
 
-def getBendValue(angle, diameter, key):
-    for bend in bends:
-        if bend["angle"] == angle:
-            for option in bend["options"]:
-                if option["diameter"] == diameter:
-                    return option.get(key)
-    return None
-
 def getValveValue(name, diameter, key):
     for valve in valves:
         if valve["name"] == name:
@@ -169,11 +110,12 @@ def getValveValue(name, diameter, key):
 #<<<<<<< Updated upstream
     return None
 
-def runParts(currStep, currCost, segmentVals, currMaxVal, currMaxSegVals):
+def runParts(currStep, currCost, segmentVals, currMaxVal, currMaxSegVals, currMaxSite):
     step = currStep
     costs = currCost
     maxVal = currMaxVal
     maxSegVals = currMaxSegVals
+    maxSite = currMaxSite
     
     diameters = [0.10, 0.11, 0.12, 0.13, 0.14, 0.15]
     
@@ -191,29 +133,28 @@ def runParts(currStep, currCost, segmentVals, currMaxVal, currMaxSegVals):
                 partLoop = [diameter, frictFact, valCoeff]
                 segmentVals[2] = partLoop
                 
-                val = runModel(segmentVals, costs, 2, False)
-                
-                step += 1
-                
-                if val > maxVal:
-                    maxVal = val
+                for site in [1, 2, 3]:
+                    val = runModel(segmentVals, costs, site, False)
                     
-                    listNum = 0
-                    entryNum = 0
+                    step += 1
                     
-                    for lists in segmentVals:
-                        for entry in lists:
-                            maxSegVals[listNum][entryNum] = segmentVals[listNum][entryNum]
-                            entryNum += 1
+                    if val > maxVal:
+                        maxVal = val
+                        maxSite = site
+                        
+                        listNum = 0
                         entryNum = 0
-                        listNum += 1
-                    for i in range(4):
-                        maxSegVals[0][i] = maxSegVals[0][i].getEta()
-                    print(f"New Max Val: {maxVal:}")
-                    print(maxSegVals)
+                        
+                        for lists in segmentVals:
+                            for entry in lists:
+                                maxSegVals[listNum][entryNum] = segmentVals[listNum][entryNum]
+                                entryNum += 1
+                            entryNum = 0
+                            listNum += 1
+                        for i in range(4):
+                            maxSegVals[0][i] = maxSegVals[0][i].getEta()
+                        print(f"New Max Val: {maxVal:}")
+                        print(maxSegVals)
                     
-                        # print(step)
-                    # if(efficiency / cost > max):
-                    #     max = efficiency / cost
 # print(max)
-    return [step, maxVal, maxSegVals]
+    return [step, maxVal, maxSegVals, maxSite]

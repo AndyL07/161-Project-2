@@ -27,9 +27,6 @@ def getDecisionMatrixValue(site, cost, efficiency):
         
         normalizedEfficiency = efficiency / maxEfficiency
         normalizedEthical = 1 - (0 / maxEthical)
-    
-    #Returns three seperate values as array
-    #return [0.4 * normalizedCost, 0.4 * normalizedEfficiency, 0.2 * normalizedEthical]
    
     # Returns one values    
     finalVal = ((0.4 * normalizedCost) + (0.4 * normalizedEfficiency) + (0.2 * normalizedEthical))

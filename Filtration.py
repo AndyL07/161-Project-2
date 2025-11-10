@@ -17,6 +17,7 @@ class Filtration():
         initFlow = slurryIn.getVolFlowRate()
         slurryIn.setFib(slurryIn.getFib() * (1 - self.eta))
         
+        # Calculates loss from waste energy
         density = 1.815
         height = 0
         for i in range(2):
@@ -38,7 +39,3 @@ class Filtration():
     
     def getEta(self):
         return self.eta
-        
-        # slurryIn.normalize()
-        # print("Normalizing")
-        # print(slurryIn)

@@ -68,6 +68,7 @@ dehyRun = -1
 flowRun = -1
 step = 0
 maxVal = 0
+maxSite = 0
 
 flowRates = getFlows(0.01, 1, 0.01)
 
@@ -139,13 +140,14 @@ for f in fermenters:
                         segmentVals[0] = mainLoop
                         
                         # Increases step by running inner loops
-                        [step, maxVal, maxSegVals] = runPumps(step, costs, segmentVals, maxVal, maxSegVals)
+                        [step, maxVal, maxSegVals, maxSite] = runPumps(step, costs, segmentVals, maxVal, maxSegVals, maxSite)
 
                         # Prints every 50 runs of this loop
                         if step % (720 * 3 * 50) == 0:
                             print(f"Step: {step} --- Max Val: {maxVal}")
                             #print(maxSegVals)
                             #print("-------------------------")
+
 # Prints the final step count (should be 7,539,120)
 print("DONE!!!! -", step)
 print(maxSegVals)

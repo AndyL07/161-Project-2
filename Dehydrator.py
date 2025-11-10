@@ -17,6 +17,7 @@ class Dehydrator():
         initFlow = slurryIn.getVolFlowRate()
         slurryIn.setWat(slurryIn.getWat() * (1 - self.eta))
         
+        # Calculates loss from waste energy
         density = 1.815
         height = 0
         for i in range(4):
@@ -38,7 +39,3 @@ class Dehydrator():
     
     def getEta(self):
         return self.eta
-
-        # slurryIn.normalize()
-        # print("Normalizing")
-        # print(slurryIn)
